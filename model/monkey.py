@@ -44,3 +44,14 @@ class MonkeyModel:
         
         return new_monkey_model
 
+
+    @staticmethod
+    def delete_monkey(monkey_id):
+        dao = MonkeyDao()
+        response = dao.delete_a_monkey(monkey_id)
+        if response:
+            response = {'message': 'monkey deleted'}
+        else: 
+            response = {'message': 'nothing was deleted'}
+        return response
+

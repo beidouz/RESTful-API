@@ -34,3 +34,14 @@ class MonkeyDao:
         return new_monkey_data
 
 
+    def delete_a_monkey(self, monkey_id):
+        a_monkey = self.collection.find_one({"_id": ObjectId(monkey_id)})
+        #if student doesn't exist in the collection -> do nothing
+        if not a_monkey:
+            return None
+        else:
+            deleted_collection = self.collection.delete_one({"_id": ObjectId(monkey_id)})
+            return deleted_collection
+
+
+

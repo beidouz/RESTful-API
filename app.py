@@ -26,11 +26,11 @@ class Monkey(Resource):
         #  return data
     
     
-    #  def delete(self, monkey_id):
-        #  print('delete a monkey')
-        #  response = MonkeyModel.delete_monkey(monkey_id)
-        #  data = jsonify(response)
-        #  return data
+    def delete(self, monkey_id):
+        print('delete a monkey')
+        response = MonkeyModel.delete_monkey(monkey_id)
+        data = jsonify(response)
+        return data
 
 
 
