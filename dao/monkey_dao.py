@@ -17,16 +17,16 @@ class MonkeyDao:
         self.collection = self.db[collection_name]# pointer to the collection? not the actual collection data
 
 
-    def get_monkey_by_id(self, monkey_id):
+    def find_by_id(self, monkey_id):
         a_monkey = self.collection.find_one({"_id": ObjectId(monkey_id)}) 
         return a_monkey
     
     
-    def get_monkey_collection(self):
+    def get_all_monkeys(self):
         return self.collection
 
 
-    def make_monkey(self, monkey_info):
+    def create_monkey(self, monkey_info):
         new_collection = self.collection.insert_one(monkey_info)
         #new monkey inserted into collection
         #unique id for new monkey automatically generated
@@ -34,14 +34,14 @@ class MonkeyDao:
         return new_monkey_data
 
 
-    def update_a_monkey(self, monkey_id, monkey_info):
+    def update_monkey(self, monkey_id, monkey_info):
         update_monkey_data = self.collection.update_one({"_id": ObjectId(monkey_id)}, {"$set": monkey_info})
         updated_monkey_data = self.collection.find_one({"_id": ObjectId(monkey_id)})
         return updated_monkey_data        
 
 
 
-    def delete_a_monkey(self, monkey_id):
+    def delete_monkey(self, monkey_id):
         a_monkey = self.collection.find_one({"_id": ObjectId(monkey_id)})
         #if monkey doesn't exist in the collection -> do nothing
         if not a_monkey:

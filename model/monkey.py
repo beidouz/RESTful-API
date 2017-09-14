@@ -12,7 +12,7 @@ class MonkeyModel:
     @staticmethod
     def find_by_id(monkey_id):
         dao = MonkeyDao() 
-        monkey_data = dao.get_monkey_by_id(monkey_id)
+        monkey_data = dao.find_by_id(monkey_id)
         monkey_model = None
 
         if monkey_data:
@@ -24,7 +24,7 @@ class MonkeyModel:
     @staticmethod
     def get_all_monkeys():
         dao = MonkeyDao()
-        monkey_collection = dao.get_monkey_collection()
+        monkey_collection = dao.get_all_monkeys()
         all_monkeys = []
         for monkey_data in monkey_collection.find():
             a_monkey = MonkeyModel(monkey_data)
@@ -36,7 +36,7 @@ class MonkeyModel:
     @staticmethod 
     def create_monkey(monkey_info):
         dao = MonkeyDao()
-        new_monkey_data = dao.make_monkey(monkey_info)
+        new_monkey_data = dao.create_monkey(monkey_info)
         new_monkey_model = None
         
         if new_monkey_data:
@@ -49,27 +49,21 @@ class MonkeyModel:
     @staticmethod
     def update_monkey(monkey_id, monkey_info):
         dao = MonkeyDao()
-        updated_monkey_data = dao.update_a_monkey(monkey_id, monkey_info)
+        updated_monkey_data = dao.update_monkey(monkey_id, monkey_info)
         updated_monkey = None
         if updated_monkey_data:
             updated_monkey = MonkeyModel(updated_monkey_data)
         return updated_monkey
 
 
-        
-        
-
-
-
-
-    
+         
     @staticmethod
     def delete_monkey(monkey_id):
         dao = MonkeyDao()
-        response = dao.delete_a_monkey(monkey_id)
+        response = dao.delete_monkey(monkey_id)
         if response:
-            response = {'message': 'monkey deleted'}
+            response = "monkey deleted"
         else: 
-            response = {'message': 'nothing was deleted'}
+            response = "nothing was deleted"
         return response
 
