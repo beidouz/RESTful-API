@@ -6,9 +6,6 @@ from model.monkey import MonkeyModel
 app = Flask(__name__)
 api = Api(app)
 
-parser = reqparse.RequestParser()
-parser.add_argument('monkey_id')
-
 
 #monkey
 #shows a single monkey and lets you delete a single monkey
@@ -39,7 +36,7 @@ class Monkey(Resource):
 
 #  #monkeys
 #  #shows a list of monkeys and lets you get all monkeys and POST to add new monkeys
-#  class Monkeys(Resource):
+class Monkeys(Resource):
     
     #  def get(self):
         #  print('getting all the monkeys')
@@ -48,12 +45,22 @@ class Monkey(Resource):
         #  return data
 
 
-    #  def post(self):
-        #  print('posting a monkey')
-        # use parser or use request    TODO
+    def post(self):
+        print('posting a monkey')
+        
+        parser = reqparse.RequestParser()
+        parser.add_argument('monkey_name')
+
+        args = parser.parse_args()
+        #question: parse_args()  Vs.  request.get_json()      which one should I use?
+        
+        new_monkey_entity = MonkeyModel.create_monkey(args)
+        data = jsonify(new_monkey_entity.__dict__)
+        return data
 
 
-#api.add_resource(Monkeys, '/monkeys')
+
+api.add_resource(Monkeys, '/zoo/monkeys')
 api.add_resource(Monkey, '/zoo/<string:monkey_id>')
 
 
