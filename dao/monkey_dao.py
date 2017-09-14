@@ -22,6 +22,10 @@ class MonkeyDao:
         return a_monkey
     
     
+    def get_monkey_collection(self):
+        return self.collection
+
+
     def make_monkey(self, monkey_info):
         new_collection = self.collection.insert_one(monkey_info)
         #new monkey inserted into collection

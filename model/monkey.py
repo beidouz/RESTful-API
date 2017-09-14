@@ -19,7 +19,19 @@ class MonkeyModel:
             monkey_model = MonkeyModel(monkey_data)
 
         return monkey_model
-    
+
+
+    @staticmethod
+    def get_all_monkeys():
+        dao = MonkeyDao()
+        monkey_collection = dao.get_monkey_collection()
+        all_monkeys = []
+        for monkey_data in monkey_collection.find():
+            a_monkey = MonkeyModel(monkey_data)
+            all_monkeys.append(a_monkey.__dict__)
+        return all_monkeys
+
+
 
     @staticmethod 
     def create_monkey(monkey_info):

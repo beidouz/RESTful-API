@@ -37,23 +37,20 @@ class Monkey(Resource):
 #  #monkeys
 #  #shows a list of monkeys and lets you get all monkeys and POST to add new monkeys
 class Monkeys(Resource):
+     
+    def get(self):
+        print('getting all the monkeys')
+        all_monkeys = MonkeyModel.get_all_monkeys()
+        #  data = jsonify(all_monkeys.__dict__) 
+        return all_monkeys
     
-    #  def get(self):
-        #  print('getting all the monkeys')
-        #  all_monkeys = MonkeyModel.get_all_monkeys()
-        #  data = jsonify(all_monkeys)
-        #  return data
-
-
+    
     def post(self):
         print('posting a monkey')
-        
         parser = reqparse.RequestParser()
         parser.add_argument('monkey_name')
-
         args = parser.parse_args()
         #question: parse_args()  Vs.  request.get_json()      which one should I use?
-        
         new_monkey_entity = MonkeyModel.create_monkey(args)
         data = jsonify(new_monkey_entity.__dict__)
         return data
@@ -61,8 +58,7 @@ class Monkeys(Resource):
 
 
 api.add_resource(Monkeys, '/zoo/monkeys')
-api.add_resource(Monkey, '/zoo/<string:monkey_id>')
-
+api.add_resource(Monkey, '/zoo/monkeys/<string:monkey_id>') 
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
