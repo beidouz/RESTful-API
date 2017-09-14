@@ -45,6 +45,24 @@ class MonkeyModel:
         return new_monkey_model
 
 
+
+    @staticmethod
+    def update_monkey(monkey_id, monkey_info):
+        dao = MonkeyDao()
+        updated_monkey_data = dao.update_a_monkey(monkey_id, monkey_info)
+        updated_monkey = None
+        if updated_monkey_data:
+            updated_monkey = MonkeyModel(updated_monkey_data)
+        return updated_monkey
+
+
+        
+        
+
+
+
+
+    
     @staticmethod
     def delete_monkey(monkey_id):
         dao = MonkeyDao()

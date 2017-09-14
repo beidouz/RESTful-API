@@ -7,23 +7,34 @@ app = Flask(__name__)
 api = Api(app)
 
 
+parser = reqparse.RequestParser()
+parser.add_argument('monkey_name')
+
+
 #monkey
 #shows a single monkey and lets you delete a single monkey
    
 class Monkey(Resource):
+    
     def get(self, monkey_id):
         print("get a monkey", monkey_id)
         monkey_entity = MonkeyModel.find_by_id(monkey_id)
-        data = jsonify(monkey_entity.__dict__)
+        if monkey_entity:
+            data = jsonify(monkey_entity.__dict__)
+        else:
+            data = "Monkey trying to get does not exist"
         return data
   
     
-    #  def put(self, monkey_id):
-        #  print('put a monkey')
-        #  monkey_info = request.get_json()
-        #  updated_monkey = MonkeyModel.update_monkey(monkey_id, monkey_info)
-        #  data = jsonify(updated_monkey.__dict__)
-        #  return data
+    def put(self, monkey_id):
+        print('put a monkey')
+        args = parser.parse_args()
+        updated_monkey = MonkeyModel.update_monkey(monkey_id, args)
+        if updated_monkey:  
+            data = jsonify(updated_monkey.__dict__)
+        else:
+            data = "Monkey trying to put does not exist"
+        return data
     
     
     def delete(self, monkey_id):
@@ -47,10 +58,8 @@ class Monkeys(Resource):
     
     def post(self):
         print('posting a monkey')
-        parser = reqparse.RequestParser()
-        parser.add_argument('monkey_name')
         args = parser.parse_args()
-        #question: parse_args()  Vs.  request.get_json()      which one should I use?
+        # parse_args()  Vs.  request.get_json()      which one should I use?
         new_monkey_entity = MonkeyModel.create_monkey(args)
         data = jsonify(new_monkey_entity.__dict__)
         return data

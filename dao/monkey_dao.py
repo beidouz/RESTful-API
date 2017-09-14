@@ -34,9 +34,16 @@ class MonkeyDao:
         return new_monkey_data
 
 
+    def update_a_monkey(self, monkey_id, monkey_info):
+        update_monkey_data = self.collection.update_one({"_id": ObjectId(monkey_id)}, {"$set": monkey_info})
+        updated_monkey_data = self.collection.find_one({"_id": ObjectId(monkey_id)})
+        return updated_monkey_data        
+
+
+
     def delete_a_monkey(self, monkey_id):
         a_monkey = self.collection.find_one({"_id": ObjectId(monkey_id)})
-        #if student doesn't exist in the collection -> do nothing
+        #if monkey doesn't exist in the collection -> do nothing
         if not a_monkey:
             return None
         else:
