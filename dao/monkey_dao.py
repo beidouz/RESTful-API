@@ -1,27 +1,23 @@
 import pymongo
 from pymongo import MongoClient
 from pymongo.database import ObjectId
+from utils.config import db_name, db_host, collection_name
 
 
-#host_name = None
-host_name = 'mongo'
-db_name = 'zoo'
-collection_name = 'monkeys'
 
 
 class MonkeyDao:
-    
-    def __init__(self):
-        self.connection = MongoClient(host_name)
-        self.db = self.connection[db_name]
-        self.collection = self.db[collection_name]# pointer to the collection? not the actual collection data
 
+    def __init__(self):
+        self.connection = MongoClient(db_host)
+        self.db = self.connection[db_name]
+        self.collection = self.db[collection_name]
 
     def find_by_id(self, monkey_id):
-        a_monkey = self.collection.find_one({"_id": ObjectId(monkey_id)}) 
+        a_monkey = self.collection.find_one({"_id": ObjectId(monkey_id)})
         return a_monkey
-    
-    
+
+
     def get_all_monkeys(self):
         return self.collection
 
@@ -37,7 +33,7 @@ class MonkeyDao:
     def update_monkey(self, monkey_id, monkey_info):
         update_monkey_data = self.collection.update_one({"_id": ObjectId(monkey_id)}, {"$set": monkey_info})
         updated_monkey_data = self.collection.find_one({"_id": ObjectId(monkey_id)})
-        return updated_monkey_data        
+        return updated_monkey_data
 
 
 
@@ -49,6 +45,3 @@ class MonkeyDao:
         else:
             deleted_collection = self.collection.delete_one({"_id": ObjectId(monkey_id)})
             return deleted_collection
-
-
-
