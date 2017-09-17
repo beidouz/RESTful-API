@@ -7,7 +7,7 @@ class MonkeyModel:
         #constructor
         self.monkey_id = str(collection['_id'])
         self.monkey_name = str(collection['monkey_name'])
-#TODO check if the name is valid 
+#TODO check if the name is valid
 
     @staticmethod
     def find_by_id(monkey_id):
@@ -15,10 +15,8 @@ class MonkeyModel:
         monkey_data = dao.find_by_id(monkey_id)
         monkey_model = None
 
-        if not monkey_data:
-            raise LookupError('Monkey id ' + str(monkey_id) + 'does not exist')
-
-        monkey_model = MonkeyModel(monkey_data)
+        if monkey_data:
+            monkey_model = MonkeyModel(monkey_data)
         return monkey_model
 
     @staticmethod
@@ -62,7 +60,5 @@ class MonkeyModel:
         dao = MonkeyDao()
         response = dao.delete_monkey(monkey_id)
         if response:
-            response = "monkey deleted"
-        else:
-            response = "nothing was deleted"
+            response = {'message': 'monkey ' + monkey_id + ' deleted'}
         return response

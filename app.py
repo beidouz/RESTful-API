@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from flask_restful import Resource, Api, reqparse
 from model.monkey import MonkeyModel
 from utils.config import host_ip
+from utils.error_utils import ErrorUtil
 
 
 app = Flask(__name__)
@@ -19,29 +20,49 @@ class Monkey(Resource):
 
     def get(self, monkey_id):
         print("get a monkey", monkey_id)
-        monkey_entity =MonkeyModel.find_by_id(monkey_id)
-        if monkey_entity:
-            data = jsonify(monkey_entity.__dict__)
-        else:
-            data.status_code = 200
+
+        try:
+            monkey_entity =MonkeyModel.find_by_id(monkey_id)
+        except Exception:
+            return ErrorUtil.internal_error(e)
+
+        if not monkey_entity:
+            return ErrorUtil.not_found(monkey_id)
+
+        data = jsonify(monkey_entity.__dict__)
+        data.status_code = 200
         return data
 
 
     def put(self, monkey_id):
         print('put a monkey')
         args = parser.parse_args()
-        updated_monkey = MonkeyModel.update_monkey(monkey_id, args)
-        if updated_monkey:
-            data = jsonify(updated_monkey.__dict__)
-        else:
-            data = "Monkey trying to put does not exist"
+
+        try:
+            updated_monkey = MonkeyModel.update_monkey(monkey_id, args)
+        except Exception as e:
+            return ErrorUtil.internal_error(e)
+
+        if not updated_monkey:
+            return ErrorUtil.not_found(monkey_id)
+
+        data = jsonify(updated_monkey.__dict__)
+        data.status_code = 200
         return data
 
 
     def delete(self, monkey_id):
         print('delete a monkey')
-        response = MonkeyModel.delete_monkey(monkey_id)
+        try:
+            response = MonkeyModel.delete_monkey(monkey_id)
+        except Exception as e:
+            return ErrorUtil.internal_error(e)
+
+        if not response:
+            return ErrorUtil.not_found(monkey_id)
+
         data = jsonify(response)
+        data.status_code = 200
         return data
 
 
@@ -52,17 +73,31 @@ class Monkeys(Resource):
 
     def get(self):
         print('getting all the monkeys')
-        all_monkeys = MonkeyModel.get_all_monkeys()
-        #  data = jsonify(all_monkeys.__dict__)
+        try:
+            all_monkeys = MonkeyModel.get_all_monkeys()
+        except Exception as e:
+            return ErrorUtil.internal_error(e)
+
+        if not all_monkeys:
+            return ErrorUtil.not_found()
+
+        data = jsonify(all_monkeys)#__dict__
+        data.status_code = 200
         return all_monkeys
 
 
     def post(self):
         print('posting a monkey')
         args = parser.parse_args()
-        # parse_args()  Vs.  request.get_json()      which one should I use?
-        new_monkey_entity = MonkeyModel.create_monkey(args)
+
+        try:
+            new_monkey_entity = MonkeyModel.create_monkey(args)
+        except Exception as e:
+            return ErrorUtil.internal_error(e)
+
+
         data = jsonify(new_monkey_entity.__dict__)
+        data.status_code = 201
         return data
 
 
