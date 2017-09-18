@@ -3,6 +3,9 @@ from flask_restful import Resource, Api, reqparse
 from model.monkey import MonkeyModel
 from utils.config import host_ip
 from utils.error_utils import ErrorUtil
+from utils.validator import Validator
+from voluptuous.error import MultipleInvalid
+
 
 
 app = Flask(__name__)
@@ -21,6 +24,12 @@ class Monkey(Resource):
     def get(self, monkey_id):
         print("get a monkey", monkey_id)
 
+        try:
+            id_json = {'id': monkey_id}
+            Validator.validate_get(id_json)
+        except MultipleInvalid as e:
+            return ErrorUtil.bad_request(e)
+            
         try:
             monkey_entity =MonkeyModel.find_by_id(monkey_id)
         except Exception:

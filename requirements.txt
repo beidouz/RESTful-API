@@ -1,4 +1,4 @@
 flask
 Flask-PyMongo
 flask-restful
-
+voluptuous==0.9.3
