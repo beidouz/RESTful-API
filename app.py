@@ -29,7 +29,7 @@ class Monkey(Resource):
             Validator.validate_get(id_json)
         except MultipleInvalid as e:
             return ErrorUtil.bad_request(e)
-            
+
         try:
             monkey_entity =MonkeyModel.find_by_id(monkey_id)
         except Exception:
@@ -48,6 +48,12 @@ class Monkey(Resource):
         args = parser.parse_args()
 
         try:
+            id_json = {'id': monkey_id}
+            Validator.validate_get(id_json)
+        except MultipleInvalid as e:
+            return ErrorUtil.bad_request(e)
+
+        try:
             updated_monkey = MonkeyModel.update_monkey(monkey_id, args)
         except Exception as e:
             return ErrorUtil.internal_error(e)
@@ -62,6 +68,13 @@ class Monkey(Resource):
 
     def delete(self, monkey_id):
         print('delete a monkey')
+
+        try:
+            id_json = {'id': monkey_id}
+            Validator.validate_get(id_json)
+        except MultipleInvalid as e:
+            return ErrorUtil.bad_request(e)
+            
         try:
             response = MonkeyModel.delete_monkey(monkey_id)
         except Exception as e:
