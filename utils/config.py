@@ -1,10 +1,6 @@
 import os
-#  isDocker = True if os.environ['USER'] == 'docker' else False
-isDocker = True
-#  isDocker = False
 
-
-db_name = 'zoo'
-collection_name = 'monkeys'
-db_host = 'mongo' if isDocker else None
-host_ip = '0.0.0.0' if isDocker else 'localhost'
+db_name = os.environ['DB_NAME'] if 'DB_NAME' in os.environ else None
+collection_name = os.environ['COLLECTION_NAME'] if 'COLLECTION_NAME' in os.environ else None
+db_host = os.environ['DB_HOST'] if 'DB_HOST' in os.environ else None
+host_ip = os.environ['HOST_IP'] if 'HOST_IP' in os.environ else None

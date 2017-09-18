@@ -74,7 +74,7 @@ class Monkey(Resource):
             Validator.validate_get(id_json)
         except MultipleInvalid as e:
             return ErrorUtil.bad_request(e)
-            
+
         try:
             response = MonkeyModel.delete_monkey(monkey_id)
         except Exception as e:
