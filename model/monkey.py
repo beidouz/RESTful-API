@@ -5,8 +5,8 @@ from dao.monkey_dao import MonkeyDao
 class MonkeyModel:
     def __init__(self, collection):
         #constructor
-        self.monkey_id = str(collection['_id'])
-        self.monkey_name = str(collection['monkey_name'])
+        self.monkey_id = str(collection['_id']) if '_id' in collection else None
+        self.monkey_name = str(collection['monkey_name']) if 'monkey_name' in collection else None
 #TODO check if the name is valid
 
     @staticmethod
